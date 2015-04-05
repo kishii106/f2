@@ -276,7 +276,7 @@ func assets_css_index_css() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindata_file_info{name: "assets/css/index.css", size: 1924, mode: os.FileMode(420), modTime: time.Unix(1428271329, 0)}
+	info := bindata_file_info{name: "assets/css/index.css", size: 1924, mode: os.FileMode(420), modTime: time.Unix(1428271398, 0)}
 	a := &asset{bytes: bytes, info:  info}
 	return a, nil
 }
@@ -296,7 +296,7 @@ func assets_css_index_css_min() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindata_file_info{name: "assets/css/index.css.min", size: 1340, mode: os.FileMode(420), modTime: time.Unix(1428271329, 0)}
+	info := bindata_file_info{name: "assets/css/index.css.min", size: 1340, mode: os.FileMode(420), modTime: time.Unix(1428271398, 0)}
 	a := &asset{bytes: bytes, info:  info}
 	return a, nil
 }
@@ -616,7 +616,7 @@ func assets_js_index_js_min() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindata_file_info{name: "assets/js/index.js.min", size: 5095, mode: os.FileMode(420), modTime: time.Unix(1428270328, 0)}
+	info := bindata_file_info{name: "assets/js/index.js.min", size: 5095, mode: os.FileMode(420), modTime: time.Unix(1428271400, 0)}
 	a := &asset{bytes: bytes, info:  info}
 	return a, nil
 }
@@ -656,7 +656,7 @@ func assets_js_sandbox_js_min() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindata_file_info{name: "assets/js/sandbox.js.min", size: 1107, mode: os.FileMode(420), modTime: time.Unix(1428270330, 0)}
+	info := bindata_file_info{name: "assets/js/sandbox.js.min", size: 1107, mode: os.FileMode(420), modTime: time.Unix(1428271364, 0)}
 	a := &asset{bytes: bytes, info:  info}
 	return a, nil
 }
