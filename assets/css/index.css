@@ -1,5 +1,6 @@
 #top-box {
   height: 400px;
+  overflow: hidden;
   /*
     背景いっぱいに画像を設定
     http://coliss.com/articles/build-websites/operation/css/css-responsive-full-background-image-by-sixrevisions.html
@@ -10,6 +11,15 @@
   background-attachment: fixed;
   background-size: cover;
   background-color: #464646;
+}
+.top-box-leave {
+  opacity: 1;
+  height: 400px !important;
+  transition: all 0.3s ease-in 0s;
+}
+.top-box-leave.top-box-leave-active {
+  height: 0px !important;
+  opacity: .0;
 }
 #catch-copy {
   color: #ffffc8;
@@ -81,18 +91,4 @@
 }
 .menu-item:hover {
   color: #c8c800 !important;
-}
-.example-enter {
-  opacity: 0.01;
-  transition: opacity 0.5s ease-in;
-}
-.example-enter.example-enter-active {
-  opacity: 1;
-}
-.example-leave {
-  opacity: 1;
-  transition: opacity 0.5s ease-in;
-}
-.example-leave.example-leave-active {
-  opacity: 0.01;
 }

@@ -2,9 +2,8 @@ var TransitionGroup = React.addons.CSSTransitionGroup;
 
 var TopBox = React.createClass({
     render: function() {
-        var classes = React.addons.classSet({ 'hidden': !this.props.visible });
         return (
-            <div id="top-box" className={classes}>
+            <div id="top-box" className="TopBox">
                 <div id="catch-copy">
                     <h2>今日、なに食べる？</h2>
                     <p>ふ〜どふぁいんだ〜がメニューを提案します。</p>
@@ -94,13 +93,12 @@ var GuestMenu = React.createClass({
             'contents': true,
             'hidden': !this.state.activate
         });
-        var titleSingleClasses = React.addons.classSet({
-            'title-single': true,
-            'hidden': this.state.activate
-        });
+        var titleSingle = !this.state.activate ? <h2 className="title-single">一人で使う</h2> : null;
         return (
             <div id="guest-menu">
-                <h2 className={titleSingleClasses}>一人で使う</h2>
+                <TransitionGroup transitionName="top-box">
+                    {titleSingle}
+                </TransitionGroup>
                 <div className="menu-items">
                     <MenuItem itemName="word-search" iconName="search" itemText="ワード検索" onClick={this.handleItemClick} />
                     <MenuItem itemName="genre" iconName="tags" itemText="ジャンル別" onClick={this.handleItemClick} />
@@ -177,10 +175,11 @@ var Page = React.createClass({
         this.setState({ topBoxVisible: !e.activate });
     },
     render: function() {
+        var topBox = this.state.topBoxVisible ? <TopBox key="topBox" visible={this.state.topBoxVisible} /> : null;
         return (
             <div>
-                <TransitionGroup transitionName="example">
-                    <TopBox key="topBox" visible={this.state.topBoxVisible} />
+                <TransitionGroup transitionName="top-box">
+                    {topBox}
                 </TransitionGroup>
                 <GuestMenu onActivateChange={this.handleGuestMenuActivateChange} />
             </div>

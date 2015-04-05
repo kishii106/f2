@@ -5,8 +5,10 @@
     text-shadow: 0 0 2px @shadow-color, 0 0 2px @shadow-color, 0 0 2px @shadow-color, 0 0 2px @shadow-color;
 }
 
+@top-box-height: 400px;
 #top-box {
-    height:400px;
+    height: @top-box-height;
+    overflow: hidden;
 
     /*
     背景いっぱいに画像を設定
@@ -18,6 +20,17 @@
     background-attachment: fixed;
     background-size: cover;
     background-color: #464646;
+}
+
+.top-box-leave {
+    opacity: 1;
+    height: @top-box-height !important;
+    transition: all .3s ease-in 0s
+}
+
+.top-box-leave.top-box-leave-active {
+    height: 0px !important;
+    opacity: .0;
 }
 
 #catch-copy {
@@ -107,24 +120,4 @@
 
 .menu-item:hover {
     color: @menu-selected-color !important;
-}
-
-
-
-.example-enter {
-  opacity: 0.01;
-  transition: opacity .5s ease-in;
-}
-
-.example-enter.example-enter-active {
-  opacity: 1;
-}
-
-.example-leave {
-  opacity: 1;
-  transition: opacity .5s ease-in;
-}
-
-.example-leave.example-leave-active {
-  opacity: 0.01;
 }

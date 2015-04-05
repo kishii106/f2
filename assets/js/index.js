@@ -2,9 +2,8 @@ var TransitionGroup = React.addons.CSSTransitionGroup;
 
 var TopBox = React.createClass({displayName: "TopBox",
     render: function() {
-        var classes = React.addons.classSet({ 'hidden': !this.props.visible });
         return (
-            React.createElement("div", {id: "top-box", className: classes}, 
+            React.createElement("div", {id: "top-box", className: "TopBox"}, 
                 React.createElement("div", {id: "catch-copy"}, 
                     React.createElement("h2", null, "今日、なに食べる？"), 
                     React.createElement("p", null, "ふ〜どふぁいんだ〜がメニューを提案します。"), 
@@ -94,13 +93,12 @@ var GuestMenu = React.createClass({displayName: "GuestMenu",
             'contents': true,
             'hidden': !this.state.activate
         });
-        var titleSingleClasses = React.addons.classSet({
-            'title-single': true,
-            'hidden': this.state.activate
-        });
+        var titleSingle = !this.state.activate ? React.createElement("h2", {className: "title-single"}, "一人で使う") : null;
         return (
             React.createElement("div", {id: "guest-menu"}, 
-                React.createElement("h2", {className: titleSingleClasses}, "一人で使う"), 
+                React.createElement(TransitionGroup, {transitionName: "top-box"}, 
+                    titleSingle
+                ), 
                 React.createElement("div", {className: "menu-items"}, 
                     React.createElement(MenuItem, {itemName: "word-search", iconName: "search", itemText: "ワード検索", onClick: this.handleItemClick}), 
                     React.createElement(MenuItem, {itemName: "genre", iconName: "tags", itemText: "ジャンル別", onClick: this.handleItemClick}), 
@@ -177,10 +175,11 @@ var Page = React.createClass({displayName: "Page",
         this.setState({ topBoxVisible: !e.activate });
     },
     render: function() {
+        var topBox = this.state.topBoxVisible ? React.createElement(TopBox, {key: "topBox", visible: this.state.topBoxVisible}) : null;
         return (
             React.createElement("div", null, 
-                React.createElement(TransitionGroup, {transitionName: "example"}, 
-                    React.createElement(TopBox, {key: "topBox", visible: this.state.topBoxVisible})
+                React.createElement(TransitionGroup, {transitionName: "top-box"}, 
+                    topBox
                 ), 
                 React.createElement(GuestMenu, {onActivateChange: this.handleGuestMenuActivateChange})
             )
