@@ -1,4 +1,4 @@
-(function() {
+(function($) {
 "use strict";
 
 var TransitionGroup = React.addons.CSSTransitionGroup;
@@ -111,20 +111,44 @@ var MenuItem = React.createClass({displayName: "MenuItem",
 });
 
 var WordSearch = React.createClass({displayName: "WordSearch",
+    getInitialState: function() {
+        return {
+            menuList: []
+        };
+    },
+    handleSearch: function() {
+        var keyword = React.findDOMNode(this.refs.keyword).value;
+        var self = this;
+        $.get("/menu/", { keyword: keyword }, function(data) {
+            self.setState({menuList: data});
+        });
+    },
     render: function() {
         var classes = React.addons.classSet({
             'hidden': !this.props.visible,
             'word-search': true
         });
+        var menuList = this.state.menuList.map(function(menu) {
+            return (
+                React.createElement("tr", null, 
+                    React.createElement("td", null, menu.name)
+                )
+            )
+        });
         return (
             React.createElement("div", {className: classes}, 
                 React.createElement("fieldset", null, 
                     React.createElement("div", {className: "input-group"}, 
-                        React.createElement("input", {type: "text", className: "form-control", placeholder: "キーワード"}), 
+                        React.createElement("input", {type: "text", ref: "keyword", className: "form-control", placeholder: "キーワード"}), 
                         React.createElement("span", {className: "input-group-btn"}, 
-                            React.createElement("button", {className: "btn btn-default", type: "button"}, "Go!")
+                            React.createElement("button", {className: "btn btn-default", type: "button", onClick: this.handleSearch}, 
+                                React.createElement("i", {className: "glyphicon glyphicon-search"})
+                            )
                         )
                     )
+                ), 
+                React.createElement("table", {className: "table"}, 
+                    menuList
                 )
             )
         )
@@ -277,4 +301,4 @@ React.render(
     React.createElement(Page, null),
     document.getElementById('page')
 );
-})();
+})(jQuery);

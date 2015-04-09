@@ -1,4 +1,4 @@
-(function() {
+(function($) {
 "use strict";
 
 var TransitionGroup = React.addons.CSSTransitionGroup;
@@ -111,21 +111,45 @@ var MenuItem = React.createClass({
 });
 
 var WordSearch = React.createClass({
+    getInitialState: function() {
+        return {
+            menuList: []
+        };
+    },
+    handleSearch: function() {
+        var keyword = React.findDOMNode(this.refs.keyword).value;
+        var self = this;
+        $.get("/menu/", { keyword: keyword }, function(data) {
+            self.setState({menuList: data});
+        });
+    },
     render: function() {
         var classes = React.addons.classSet({
             'hidden': !this.props.visible,
             'word-search': true
         });
+        var menuList = this.state.menuList.map(function(menu) {
+            return (
+                <tr>
+                    <td>{menu.name}</td>
+                </tr>
+            )
+        });
         return (
             <div className={classes}>
                 <fieldset>
                     <div className="input-group">
-                        <input type="text" className="form-control" placeholder="キーワード" />
+                        <input type="text" ref="keyword" className="form-control" placeholder="キーワード" />
                         <span className="input-group-btn">
-                            <button className="btn btn-default" type="button">Go!</button>
+                            <button className="btn btn-default" type="button" onClick={this.handleSearch}>
+                                <i className="glyphicon glyphicon-search" />
+                            </button>
                         </span>
                     </div>
                 </fieldset>
+                <table className="table">
+                    {menuList}
+                </table>
             </div>
         )
     }
@@ -277,4 +301,4 @@ React.render(
     <Page />,
     document.getElementById('page')
 );
-})();
+})(jQuery);
