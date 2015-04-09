@@ -1,55 +1,60 @@
 (function() {
 "use strinct";
 
-var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
+var TransitionGroup = React.addons.CSSTransitionGroup;
 
-var TodoList = React.createClass({
-  getInitialState: function() {
-    return {items: ['hello', 'world', 'click', 'me']};
-  },
-  handleAdd: function() {
-    var newItems =
-      this.state.items.concat([prompt('Enter some text')]);
-    this.setState({items: newItems});
-  },
-  handleRemove: function(i) {
-    var newItems = this.state.items;
-    newItems.splice(i, 1);
-    this.setState({items: newItems});
-  },
-  render: function() {
-    var items = this.state.items.map(function(item, i) {
-      return (
-        <div key={item} className="contents" onClick={this.handleRemove.bind(this, i)}>
-            <Item label={item} />
-        </div>
-      );
-    }.bind(this));
-    return (
-      <div>
-        <button onClick={this.handleAdd}>Add Item</button>
-        <ReactCSSTransitionGroup transitionName="example">
-            {items}
-        </ReactCSSTransitionGroup>
-      </div>
-    );
-  }
-});
-
-var Item = React.createClass({
+var GlobalMenu = React.createClass({
+    getInitialState: function() {
+        return {
+            listVisible: false,
+            data: [
+                { text: "設定", icon: "cog" },
+                { text: "ログアウト", icon: "log-out" },
+            ],
+        };
+    },
+    onClick: function() {
+        this.setState({ listVisible: !this.state.listVisible });
+    },
     render: function() {
+        var items = this.state.data.map(function(data) {
+            return (
+                <li className="menu-item">
+                    <i className={"glyphicon glyphicon-" + data.icon} />
+                    <span className="menu-text">{data.text}</span>
+                </li>
+            )
+        });
         return (
-            <span className="Item">{this.props.label}</span>
+            <div className="GlobalMenu">
+                <a className="menu-button btn btn-default" onClick={this.onClick}>
+                    <i className="glyphicon glyphicon-list" />
+                </a>
+                <TransitionGroup transitionName="menu-list">
+                {this.state.listVisible ?
+                    <ul key="menu-list" className="menu-list">
+                        {items}
+                    </ul> : null
+                }
+                </TransitionGroup>
+            </div>
         )
     }
 });
 
-var Box = React.createClass({
+var Page = React.createClass({
+    render: function() {
+        return (
+            <div className="Page">
+                <GlobalMenu />
+            </div>
+        )
+    }
 });
 
 React.render(
-    <TodoList />,
-    document.getElementById('todo')
+    <Page />,
+    document.getElementById('page')
 );
 
 })();

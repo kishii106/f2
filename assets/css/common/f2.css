@@ -1,5 +1,18 @@
 body {
   font-family: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "ＭＳ Ｐゴシック", "MS PGothic", Osaka, sans-self, Verdana, Arial, Helvetica;
+  z-index: 1;
+}
+ul {
+  margin: 0;
+  padding: 0;
+}
+a,
+a:visited {
+  color: inherit;
+}
+a:hover {
+  color: #ffff00;
+  text-decoration: none;
 }
 #header {
   width: 100%;

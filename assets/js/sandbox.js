@@ -1,55 +1,60 @@
 (function() {
 "use strinct";
 
-var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
+var TransitionGroup = React.addons.CSSTransitionGroup;
 
-var TodoList = React.createClass({displayName: "TodoList",
-  getInitialState: function() {
-    return {items: ['hello', 'world', 'click', 'me']};
-  },
-  handleAdd: function() {
-    var newItems =
-      this.state.items.concat([prompt('Enter some text')]);
-    this.setState({items: newItems});
-  },
-  handleRemove: function(i) {
-    var newItems = this.state.items;
-    newItems.splice(i, 1);
-    this.setState({items: newItems});
-  },
-  render: function() {
-    var items = this.state.items.map(function(item, i) {
-      return (
-        React.createElement("div", {key: item, className: "contents", onClick: this.handleRemove.bind(this, i)}, 
-            React.createElement(Item, {label: item})
-        )
-      );
-    }.bind(this));
-    return (
-      React.createElement("div", null, 
-        React.createElement("button", {onClick: this.handleAdd}, "Add Item"), 
-        React.createElement(ReactCSSTransitionGroup, {transitionName: "example"}, 
-            items
-        )
-      )
-    );
-  }
-});
-
-var Item = React.createClass({displayName: "Item",
+var GlobalMenu = React.createClass({displayName: "GlobalMenu",
+    getInitialState: function() {
+        return {
+            listVisible: false,
+            data: [
+                { text: "設定", icon: "cog" },
+                { text: "ログアウト", icon: "log-out" },
+            ],
+        };
+    },
+    onClick: function() {
+        this.setState({ listVisible: !this.state.listVisible });
+    },
     render: function() {
+        var items = this.state.data.map(function(data) {
+            return (
+                React.createElement("li", {className: "menu-item"}, 
+                    React.createElement("i", {className: "glyphicon glyphicon-" + data.icon}), 
+                    React.createElement("span", {className: "menu-text"}, data.text)
+                )
+            )
+        });
         return (
-            React.createElement("span", {className: "Item"}, this.props.label)
+            React.createElement("div", {className: "GlobalMenu"}, 
+                React.createElement("a", {className: "menu-button btn btn-default", onClick: this.onClick}, 
+                    React.createElement("i", {className: "glyphicon glyphicon-list"})
+                ), 
+                React.createElement(TransitionGroup, {transitionName: "menu-list"}, 
+                this.state.listVisible ?
+                    React.createElement("ul", {key: "menu-list", className: "menu-list"}, 
+                        items
+                    ) : null
+                
+                )
+            )
         )
     }
 });
 
-var Box = React.createClass({displayName: "Box",
+var Page = React.createClass({displayName: "Page",
+    render: function() {
+        return (
+            React.createElement("div", {className: "Page"}, 
+                React.createElement(GlobalMenu, null)
+            )
+        )
+    }
 });
 
 React.render(
-    React.createElement(TodoList, null),
-    document.getElementById('todo')
+    React.createElement(Page, null),
+    document.getElementById('page')
 );
 
 })();

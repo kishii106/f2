@@ -34,7 +34,7 @@ var LoginBox = React.createClass({displayName: "LoginBox",
                         "ログインしたままにする"
                     )
                 ), 
-                React.createElement("a", {href: "#", onClick: this.handleLogin}, "ログイン"), 
+                React.createElement("a", {className: "login-text", href: "#", onClick: this.handleLogin}, "ログイン"), 
                 "または", 
                 React.createElement("a", {className: "btn btn-success", onClick: this.handleSignIn}, 
                     React.createElement("i", {className: "glyphicon glyphicon-ok-sign"}), 
@@ -225,37 +225,43 @@ var Page = React.createClass({displayName: "Page",
 var GlobalMenu = React.createClass({displayName: "GlobalMenu",
     getInitialState: function() {
         return {
-            data: [
-                { text: "ログイン", icon: "log-in" },
-                { text: "設定", icon: "cog" },
-            ],
             listVisible: false,
+            data: [
+                { text: "ワード検索", icon: "search" },
+                { text: "ジャンル別", icon: "tags" },
+                { text: "おとなり", icon: "home" },
+                { text: "設定", icon: "cog" },
+                { text: "ログアウト", icon: "log-out" },
+            ],
         };
     },
-    onClick: function() {
+    switchListVisible: function() {
         this.setState({ listVisible: !this.state.listVisible });
-        console.log(this.state.listVisible);
     },
     render: function() {
         var items = this.state.data.map(function(data) {
             return (
-                React.createElement("li", {key: data.text, className: "global-menu-item"}, 
-                    React.createElement("a", {className: "global-menu-item", href: ""}, 
+                React.createElement("li", {className: "global-menu-item"}, 
+                    React.createElement("a", {href: "#"}, 
                         React.createElement("i", {className: "glyphicon glyphicon-" + data.icon}), 
-                        React.createElement("span", {className: "global-menu-item-text"}, data.text)
+                        React.createElement("span", {className: "global-menu-text"}, data.text)
                     )
                 )
             )
         });
         return (
             React.createElement("div", {className: "GlobalMenu"}, 
-                React.createElement("a", {href: "#", className: "global-menu-button btn btn-default", onClick: this.onClick}, 
-                    React.createElement("i", {className: "glyphicon glyphicon-menu-hamburger"})
+                React.createElement("a", {className: "global-menu-button btn btn-default", onClick: this.switchListVisible}, 
+                    React.createElement("i", {className: "glyphicon glyphicon-list"})
                 ), 
                 React.createElement(TransitionGroup, {transitionName: "global-menu-list"}, 
                 this.state.listVisible ?
                     React.createElement("ul", {key: "global-menu-list", className: "global-menu-list"}, 
                         items
+                    ) : null, 
+                
+                this.state.listVisible ?
+                    React.createElement("div", {className: "screen-shutter", onClick: this.switchListVisible}
                     ) : null
                 
                 )

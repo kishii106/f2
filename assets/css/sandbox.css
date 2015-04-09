@@ -1,18 +1,41 @@
-.example-enter {
-  opacity: 0.01;
-  transition: opacity 0.5s ease-in;
+.GlobalMenu .menu-button {
+  font-size: 150%;
+  position: fixed;
+  top: 2px;
+  right: -2px;
+  padding-right: 6px;
 }
-.example-enter.example-enter-active {
-  opacity: 1;
+.GlobalMenu .menu-list {
+  font-size: 150%;
+  background: rgba(255, 255, 255, 0.6);
+  position: fixed;
+  top: 50px;
+  right: 0px;
 }
-.example-leave {
-  opacity: 1;
-  transition: opacity 0.5s ease-in;
+.GlobalMenu .menu-item {
+  margin: 1px;
+  padding-top: 2px;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-bottom: 1px;
+  list-style: none;
+  color: #ffffff;
+  background: #000000;
 }
-.example-leave.example-leave-active {
-  opacity: 0.01;
+.GlobalMenu .menu-text {
+  padding-left: 6px;
 }
-.Item {
-  background: #ffc8c8;
-  border-radius: 4px;
+.GlobalMenu .menu-list-enter {
+  right: -100px;
+  transition: right 0.1s ease-in;
+}
+.GlobalMenu .menu-list-enter-active {
+  right: 0;
+}
+.GlobalMenu .menu-list-leave {
+  right: 0px;
+  transition: right 0.1s ease-in;
+}
+.GlobalMenu .menu-list-leave-active {
+  right: -100px;
 }

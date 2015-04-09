@@ -34,7 +34,7 @@ var LoginBox = React.createClass({
                         ログインしたままにする
                     </label>
                 </div>
-                <a href="#" onClick={this.handleLogin}>ログイン</a>
+                <a className="login-text" href="#" onClick={this.handleLogin}>ログイン</a>
                 または
                 <a className="btn btn-success" onClick={this.handleSignIn}>
                     <i className="glyphicon glyphicon-ok-sign"></i>
@@ -225,38 +225,44 @@ var Page = React.createClass({
 var GlobalMenu = React.createClass({
     getInitialState: function() {
         return {
-            data: [
-                { text: "ログイン", icon: "log-in" },
-                { text: "設定", icon: "cog" },
-            ],
             listVisible: false,
+            data: [
+                { text: "ワード検索", icon: "search" },
+                { text: "ジャンル別", icon: "tags" },
+                { text: "おとなり", icon: "home" },
+                { text: "設定", icon: "cog" },
+                { text: "ログアウト", icon: "log-out" },
+            ],
         };
     },
-    onClick: function() {
+    switchListVisible: function() {
         this.setState({ listVisible: !this.state.listVisible });
-        console.log(this.state.listVisible);
     },
     render: function() {
         var items = this.state.data.map(function(data) {
             return (
-                <li key={data.text} className="global-menu-item">
-                    <a className="global-menu-item" href="">
+                <li className="global-menu-item">
+                    <a href="#">
                         <i className={"glyphicon glyphicon-" + data.icon} />
-                        <span className="global-menu-item-text">{data.text}</span>
+                        <span className="global-menu-text">{data.text}</span>
                     </a>
                 </li>
             )
         });
         return (
             <div className="GlobalMenu">
-                <a href="#" className="global-menu-button btn btn-default" onClick={this.onClick}>
-                    <i className="glyphicon glyphicon-menu-hamburger" />
+                <a className="global-menu-button btn btn-default" onClick={this.switchListVisible}>
+                    <i className="glyphicon glyphicon-list" />
                 </a>
                 <TransitionGroup transitionName="global-menu-list">
                 {this.state.listVisible ?
-                    <ul key={"global-menu-list"} className="global-menu-list">
+                    <ul key="global-menu-list" className="global-menu-list">
                         {items}
                     </ul> : null
+                }
+                {this.state.listVisible ?
+                    <div className="screen-shutter" onClick={this.switchListVisible}>
+                    </div> : null
                 }
                 </TransitionGroup>
             </div>

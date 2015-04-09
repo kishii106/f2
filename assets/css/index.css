@@ -1,53 +1,54 @@
-#global-menu {
+.GlobalMenu .screen-shutter {
   position: fixed;
-  top: 0px;
-  right: 0px;
-  z-index: 100;
+  top: 0;
+  left: 0;
+  width: 5000px;
+  height: 5000px;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 900;
 }
-#global-menu .global-menu-button {
-  position: fixed;
-  top: 3px;
-  right: -6px;
-  padding-right: 10px;
+.GlobalMenu .global-menu-button {
   font-size: 150%;
-}
-#global-menu .global-menu-list {
   position: fixed;
+  top: 2px;
+  right: -2px;
+  padding-right: 6px;
+  z-index: 1000;
+}
+.GlobalMenu .global-menu-list {
+  font-size: 200%;
   background: rgba(255, 255, 255, 0.6);
-  margin: 0;
-  padding: 0;
+  position: fixed;
   top: 50px;
-  min-width: 200px;
-  right: 0;
-  font-size: 150%;
+  right: 0px;
+  z-index: 1000;
 }
-#global-menu li.global-menu-item {
-  list-style: none;
-  margin: 1px;
+.GlobalMenu .global-menu-item {
+  margin: 2px;
   padding-top: 2px;
-  padding-left: 4px;
-  padding-bottom: 1px;
-  background: rgba(0, 0, 0, 0.9);
+  padding-left: 8px;
+  padding-right: 30px;
+  padding-bottom: 2px;
+  list-style: none;
+  color: #c8c8e6;
+  background: #000000;
 }
-#global-menu li.global-menu-item a.global-menu-item {
-  color: #ffffff;
+.GlobalMenu .global-menu-text {
+  padding-left: 6px;
 }
-#global-menu .global-menu-item-text {
-  margin-left: 8px;
+.GlobalMenu .global-menu-list-enter {
+  right: -100px;
+  transition: right 0.1s ease-in;
 }
-.global-menu-list-enter {
-  opacity: 0;
-  transition: opacity 0.2s ease-out;
+.GlobalMenu .global-menu-list-enter-active {
+  right: 0;
 }
-.global-menu-list-enter-active {
-  opacity: 1;
+.GlobalMenu .global-menu-list-leave {
+  right: 0px;
+  transition: right 0.1s ease-in;
 }
-.global-menu-list-leave {
-  opacity: 1;
-  transition: opacity 0.2s ease-in;
-}
-.global-menu-list-leave-active {
-  opacity: 0;
+.GlobalMenu .global-menu-list-leave-active {
+  right: -100px;
 }
 #top-box {
   height: 400px;
@@ -104,6 +105,12 @@
 #login-box div.checkbox {
   margin-top: 20px;
   margin-bottom: 20px;
+}
+#login-box .login-text {
+  color: #32329b;
+}
+#login-box .login-text:hover {
+  color: #ffff00;
 }
 #contents {
   padding-bottom: 50px;
