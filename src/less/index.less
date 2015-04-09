@@ -22,15 +22,26 @@
     background-color: #464646;
 }
 
-.top-box-leave {
-    opacity: 1;
+.top-box-enter {
+    height: 0 !important;
+    opacity: 0;
+    transition: all .3s ease-in 0s
+}
+
+.top-box-enter.top-box-enter-active {
     height: @top-box-height !important;
+    opacity: 1;
+}
+
+.top-box-leave {
+    height: @top-box-height !important;
+    opacity: 1;
     transition: all .3s ease-in 0s
 }
 
 .top-box-leave.top-box-leave-active {
     height: 0px !important;
-    opacity: .0;
+    opacity: 0;
 }
 
 #catch-copy {

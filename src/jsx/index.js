@@ -1,22 +1,5 @@
 var TransitionGroup = React.addons.CSSTransitionGroup;
 
-var TopBox = React.createClass({
-    render: function() {
-        return (
-            <div id="top-box" className="TopBox">
-                <div id="catch-copy">
-                    <h2>今日、なに食べる？</h2>
-                    <p>ふ〜どふぁいんだ〜がメニューを提案します。</p>
-                    <p>今日もあなたの食事が楽しくなりますように。</p>
-                </div>
-                <div id="login-box">
-                    <LoginBox />
-                </div>
-            </div>
-        )
-    }
-});
-
 var LoginBox = React.createClass({
     getInitialState: function() {
         return { autoLogin: true };
@@ -65,50 +48,50 @@ var LoginBox = React.createClass({
 var GuestMenu = React.createClass({
     getInitialState: function() {
         return {
-            activate: false,
+            active: false,
             wordSearchSelected: false,
             genreSelected: false,
             neighborSelected: false
         };
     },
     handleItemClick: function(e) {
-        var handler = function() {
-            this.props.onActivateChange({ activate: true });
-            this.setState({
-                activate: true,
-                wordSearchSelected: e.itemName === 'word-search',
-                genreSelected: e.itemName === 'genre',
-                neighborSelected: e.itemName === 'neighbor'
-            });
-        }.bind(this);
-        handler();
-//        if (this.state.activate) {
-//            handler();
-//        } else {
-//            $('#top-box, .title-single').animate({ height: 0, opacity: 0 }, 400, null, handler);
-//        }
+        this.props.onActiveChange({ active: true });
+        this.setState({
+            active: true,
+            wordSearchSelected: e.itemName === 'word-search',
+            genreSelected: e.itemName === 'genre',
+            neighborSelected: e.itemName === 'neighbor'
+        });
+    },
+    handleTopBoxShow: function() {
+        this.props.onActiveChange({ active: false });
+        this.setState({
+            active: false
+        });
     },
     render: function() {
-        var contentsClasses = React.addons.classSet({
-            'contents': true,
-            'hidden': !this.state.activate
-        });
-        var titleSingle = !this.state.activate ? <h2 className="title-single">一人で使う</h2> : null;
         return (
             <div id="guest-menu">
                 <TransitionGroup transitionName="top-box">
-                    {titleSingle}
+                    {!this.state.active ? <h2 className="title-single">一人で使う</h2> : null}
+                    {this.state.active ?
+                        <button className="btn" onClick= {this.handleTopBoxShow}>
+                            <i className="glyphicon glyphicon-list" />
+                        </button> : null
+                    }
                 </TransitionGroup>
                 <div className="menu-items">
                     <MenuItem itemName="word-search" iconName="search" itemText="ワード検索" onClick={this.handleItemClick} />
                     <MenuItem itemName="genre" iconName="tags" itemText="ジャンル別" onClick={this.handleItemClick} />
                     <MenuItem itemName="neighbor" iconName="home" itemText="おとなり" onClick={this.handleItemClick} />
                 </div>
-                <div className={contentsClasses}>
-                    <WordSearch visible={this.state.wordSearchSelected} />
-                    <Genre visible={this.state.genreSelected} />
-                    <Neighbor visible={this.state.neighborSelected} />
-                </div>
+                {this.state.active ?
+                    <div className="contents">
+                        <WordSearch visible={this.state.wordSearchSelected} />
+                        <Genre visible={this.state.genreSelected} />
+                        <Neighbor visible={this.state.neighborSelected} />
+                    </div> : null
+                }
             </div>
         )
     }
@@ -167,21 +150,38 @@ var Neighbor = React.createClass({
     }
 });
 
+var TopBox = React.createClass({
+    render: function() {
+        var classes = React.addons.classSet({'TopBox': true});
+        return (
+            <div id="top-box" className={classes}>
+                <div id="catch-copy">
+                    <h2>今日、なに食べる？</h2>
+                    <p>ふ〜どふぁいんだ〜がメニューを提案します。</p>
+                    <p>今日もあなたの食事が楽しくなりますように。</p>
+                </div>
+                <div id="login-box">
+                    <LoginBox />
+                </div>
+            </div>
+        )
+    }
+});
+
 var Page = React.createClass({
     getInitialState: function() {
         return { topBoxVisible: true };
     },
-    handleGuestMenuActivateChange: function(e) {
-        this.setState({ topBoxVisible: !e.activate });
+    handleGuestMenuActiveChange: function(e) {
+        this.setState({ topBoxVisible: !e.active });
     },
     render: function() {
-        var topBox = this.state.topBoxVisible ? <TopBox key="topBox" visible={this.state.topBoxVisible} /> : null;
         return (
             <div>
                 <TransitionGroup transitionName="top-box">
-                    {topBox}
+                    {this.state.topBoxVisible ? <TopBox /> : null}
                 </TransitionGroup>
-                <GuestMenu onActivateChange={this.handleGuestMenuActivateChange} />
+                <GuestMenu onActiveChange={this.handleGuestMenuActiveChange} />
             </div>
         )
     }
