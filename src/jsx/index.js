@@ -1,3 +1,6 @@
+(function() {
+"use strict";
+
 var TransitionGroup = React.addons.CSSTransitionGroup;
 
 var LoginBox = React.createClass({
@@ -64,12 +67,6 @@ var GuestMenu = React.createClass({
             activeMenuName: e.itemName,
         });
     },
-    handleTopBoxShow: function() {
-        this.props.onActiveChange({ active: false });
-        this.setState({
-            active: false,
-        });
-    },
     render: function() {
         var self = this;
         var items = this.state.data.map(function(data) {
@@ -81,11 +78,6 @@ var GuestMenu = React.createClass({
             <div id="guest-menu">
                 <TransitionGroup transitionName="top-box">
                     {!this.state.active ? <h2 className="title-single">一人で使う</h2> : null}
-                    {this.state.active ?
-                        <button className="btn" onClick= {this.handleTopBoxShow}>
-                            <i className="glyphicon glyphicon-list" />
-                        </button> : null
-                    }
                 </TransitionGroup>
                 <div className="menu-items">
                     {items}
@@ -203,46 +195,32 @@ var TopBox = React.createClass({
     }
 });
 
-var Page = React.createClass({
-    getInitialState: function() {
-        return { topBoxVisible: true };
-    },
-    handleGuestMenuActiveChange: function(e) {
-        this.setState({ topBoxVisible: !e.active });
-    },
-    render: function() {
-        return (
-            <div>
-                <TransitionGroup transitionName="top-box">
-                    {this.state.topBoxVisible ? <TopBox /> : null}
-                </TransitionGroup>
-                <GuestMenu onActiveChange={this.handleGuestMenuActiveChange} />
-            </div>
-        )
-    }
-});
-
 var GlobalMenu = React.createClass({
     getInitialState: function() {
         return {
             listVisible: false,
             data: [
-                { text: "ワード検索", icon: "search" },
-                { text: "ジャンル別", icon: "tags" },
-                { text: "おとなり", icon: "home" },
-                { text: "設定", icon: "cog" },
-                { text: "ログアウト", icon: "log-out" },
+                { description: "word-search", text: "ワード検索", icon: "search" },
+                { description: "genre", text: "ジャンル別", icon: "tags" },
+                { description: "neighbor", text: "おとなり", icon: "home" },
+                { description: "settings", text: "設定", icon: "cog" },
+                { description: "login", text: "ログイン", icon: "log-in" },
             ],
         };
     },
     switchListVisible: function() {
         this.setState({ listVisible: !this.state.listVisible });
     },
+    handleClick: function(e) {
+        this.props.onItemClicked(e);
+        this.setState({ listVisible: false });
+    },
     render: function() {
+        var self = this;
         var items = this.state.data.map(function(data) {
             return (
-                <li className="global-menu-item">
-                    <a href="#">
+                <li key={"global-menu-item_" + data.description} className="global-menu-item">
+                    <a href="#" onClick={self.handleClick.bind(self, { data: data })}>
                         <i className={"glyphicon glyphicon-" + data.icon} />
                         <span className="global-menu-text">{data.text}</span>
                     </a>
@@ -270,11 +248,33 @@ var GlobalMenu = React.createClass({
     }
 });
 
-React.render(
-    <GlobalMenu />,
-    document.getElementById("global-menu")
-);
+var Page = React.createClass({
+    getInitialState: function() {
+        return { topBoxVisible: true };
+    },
+    handleGuestMenuActiveChange: function(e) {
+        this.setState({ topBoxVisible: !e.active });
+    },
+    handleGlobalMenuItemClicked: function(e) {
+        if (e.data.description === "login") {
+            this.setState({ topBoxVisible: true });
+        }
+    },
+    render: function() {
+        return (
+            <div>
+                <GlobalMenu onItemClicked={this.handleGlobalMenuItemClicked} />
+                <TransitionGroup transitionName="top-box">
+                    {this.state.topBoxVisible ? <TopBox /> : null}
+                </TransitionGroup>
+                <GuestMenu onActiveChange={this.handleGuestMenuActiveChange} />
+            </div>
+        )
+    }
+});
+
 React.render(
     <Page />,
     document.getElementById('page')
 );
+})();

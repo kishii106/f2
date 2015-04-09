@@ -1,3 +1,6 @@
+(function() {
+"use strict";
+
 var TransitionGroup = React.addons.CSSTransitionGroup;
 
 var LoginBox = React.createClass({displayName: "LoginBox",
@@ -64,12 +67,6 @@ var GuestMenu = React.createClass({displayName: "GuestMenu",
             activeMenuName: e.itemName,
         });
     },
-    handleTopBoxShow: function() {
-        this.props.onActiveChange({ active: false });
-        this.setState({
-            active: false,
-        });
-    },
     render: function() {
         var self = this;
         var items = this.state.data.map(function(data) {
@@ -80,12 +77,7 @@ var GuestMenu = React.createClass({displayName: "GuestMenu",
         return (
             React.createElement("div", {id: "guest-menu"}, 
                 React.createElement(TransitionGroup, {transitionName: "top-box"}, 
-                    !this.state.active ? React.createElement("h2", {className: "title-single"}, "一人で使う") : null, 
-                    this.state.active ?
-                        React.createElement("button", {className: "btn", onClick: this.handleTopBoxShow}, 
-                            React.createElement("i", {className: "glyphicon glyphicon-list"})
-                        ) : null
-                    
+                    !this.state.active ? React.createElement("h2", {className: "title-single"}, "一人で使う") : null
                 ), 
                 React.createElement("div", {className: "menu-items"}, 
                     items
@@ -203,46 +195,32 @@ var TopBox = React.createClass({displayName: "TopBox",
     }
 });
 
-var Page = React.createClass({displayName: "Page",
-    getInitialState: function() {
-        return { topBoxVisible: true };
-    },
-    handleGuestMenuActiveChange: function(e) {
-        this.setState({ topBoxVisible: !e.active });
-    },
-    render: function() {
-        return (
-            React.createElement("div", null, 
-                React.createElement(TransitionGroup, {transitionName: "top-box"}, 
-                    this.state.topBoxVisible ? React.createElement(TopBox, null) : null
-                ), 
-                React.createElement(GuestMenu, {onActiveChange: this.handleGuestMenuActiveChange})
-            )
-        )
-    }
-});
-
 var GlobalMenu = React.createClass({displayName: "GlobalMenu",
     getInitialState: function() {
         return {
             listVisible: false,
             data: [
-                { text: "ワード検索", icon: "search" },
-                { text: "ジャンル別", icon: "tags" },
-                { text: "おとなり", icon: "home" },
-                { text: "設定", icon: "cog" },
-                { text: "ログアウト", icon: "log-out" },
+                { description: "word-search", text: "ワード検索", icon: "search" },
+                { description: "genre", text: "ジャンル別", icon: "tags" },
+                { description: "neighbor", text: "おとなり", icon: "home" },
+                { description: "settings", text: "設定", icon: "cog" },
+                { description: "login", text: "ログイン", icon: "log-in" },
             ],
         };
     },
     switchListVisible: function() {
         this.setState({ listVisible: !this.state.listVisible });
     },
+    handleClick: function(e) {
+        this.props.onItemClicked(e);
+        this.setState({ listVisible: false });
+    },
     render: function() {
+        var self = this;
         var items = this.state.data.map(function(data) {
             return (
-                React.createElement("li", {className: "global-menu-item"}, 
-                    React.createElement("a", {href: "#"}, 
+                React.createElement("li", {key: "global-menu-item_" + data.description, className: "global-menu-item"}, 
+                    React.createElement("a", {href: "#", onClick: self.handleClick.bind(self, { data: data })}, 
                         React.createElement("i", {className: "glyphicon glyphicon-" + data.icon}), 
                         React.createElement("span", {className: "global-menu-text"}, data.text)
                     )
@@ -270,11 +248,33 @@ var GlobalMenu = React.createClass({displayName: "GlobalMenu",
     }
 });
 
-React.render(
-    React.createElement(GlobalMenu, null),
-    document.getElementById("global-menu")
-);
+var Page = React.createClass({displayName: "Page",
+    getInitialState: function() {
+        return { topBoxVisible: true };
+    },
+    handleGuestMenuActiveChange: function(e) {
+        this.setState({ topBoxVisible: !e.active });
+    },
+    handleGlobalMenuItemClicked: function(e) {
+        if (e.data.description === "login") {
+            this.setState({ topBoxVisible: true });
+        }
+    },
+    render: function() {
+        return (
+            React.createElement("div", null, 
+                React.createElement(GlobalMenu, {onItemClicked: this.handleGlobalMenuItemClicked}), 
+                React.createElement(TransitionGroup, {transitionName: "top-box"}, 
+                    this.state.topBoxVisible ? React.createElement(TopBox, null) : null
+                ), 
+                React.createElement(GuestMenu, {onActiveChange: this.handleGuestMenuActiveChange})
+            )
+        )
+    }
+});
+
 React.render(
     React.createElement(Page, null),
     document.getElementById('page')
 );
+})();
