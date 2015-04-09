@@ -49,27 +49,34 @@ var GuestMenu = React.createClass({displayName: "GuestMenu",
     getInitialState: function() {
         return {
             active: false,
-            wordSearchSelected: false,
-            genreSelected: false,
-            neighborSelected: false
+            data: [
+                { itemName: "word-search", iconName: "search", itemText: "ワード検索" },
+                { itemName: "genre", iconName: "tags", itemText: "ジャンル別" },
+                { itemName: "neighbor", iconName: "home", itemText: "おとなり" },
+                { itemName: "menu-registration", iconName: "plus", itemText: "メニュー追加" },
+            ]
         };
     },
     handleItemClick: function(e) {
         this.props.onActiveChange({ active: true });
         this.setState({
             active: true,
-            wordSearchSelected: e.itemName === 'word-search',
-            genreSelected: e.itemName === 'genre',
-            neighborSelected: e.itemName === 'neighbor'
+            activeMenuName: e.itemName,
         });
     },
     handleTopBoxShow: function() {
         this.props.onActiveChange({ active: false });
         this.setState({
-            active: false
+            active: false,
         });
     },
     render: function() {
+        var self = this;
+        var items = this.state.data.map(function(data) {
+            return (
+                React.createElement(MenuItem, {key: data.itemName, itemName: data.itemName, iconName: data.iconName, itemText: data.itemText, onClick: self.handleItemClick})
+            )
+        });
         return (
             React.createElement("div", {id: "guest-menu"}, 
                 React.createElement(TransitionGroup, {transitionName: "top-box"}, 
@@ -81,15 +88,14 @@ var GuestMenu = React.createClass({displayName: "GuestMenu",
                     
                 ), 
                 React.createElement("div", {className: "menu-items"}, 
-                    React.createElement(MenuItem, {itemName: "word-search", iconName: "search", itemText: "ワード検索", onClick: this.handleItemClick}), 
-                    React.createElement(MenuItem, {itemName: "genre", iconName: "tags", itemText: "ジャンル別", onClick: this.handleItemClick}), 
-                    React.createElement(MenuItem, {itemName: "neighbor", iconName: "home", itemText: "おとなり", onClick: this.handleItemClick})
+                    items
                 ), 
                 this.state.active ?
                     React.createElement("div", {className: "contents"}, 
-                        React.createElement(WordSearch, {visible: this.state.wordSearchSelected}), 
-                        React.createElement(Genre, {visible: this.state.genreSelected}), 
-                        React.createElement(Neighbor, {visible: this.state.neighborSelected})
+                        React.createElement(WordSearch, {visible: this.state.activeMenuName === "word-search"}), 
+                        React.createElement(Genre, {visible: this.state.activeMenuName === "genre"}), 
+                        React.createElement(Neighbor, {visible: this.state.activeMenuName === "neighbor"}), 
+                        React.createElement(MenuRegistration, {visible: this.state.activeMenuName === "menu-registration"})
                     ) : null
                 
             )
@@ -103,11 +109,9 @@ var MenuItem = React.createClass({displayName: "MenuItem",
         this.props.onClick( { itemTag: itemTag[0], itemName: this.props.itemName });
     },
     render: function() {
-        var classes = React.addons.classSet('menu-item', this.props.itemName);
-        var icon = React.addons.classSet('glyphicon', 'glyphicon-' + this.props.iconName);
         return (
-            React.createElement("div", {className: classes, onClick: this.handleClick}, 
-                React.createElement("i", {className: icon}), 
+            React.createElement("div", {className: "menu-item " + this.props.itemName, onClick: this.handleClick}, 
+                React.createElement("i", {className: "glyphicon glyphicon-" + this.props.iconName}), 
                 this.props.itemText
             )
         )
@@ -121,7 +125,16 @@ var WordSearch = React.createClass({displayName: "WordSearch",
             'word-search': true
         });
         return (
-            React.createElement("div", {className: classes})
+            React.createElement("div", {className: classes}, 
+                React.createElement("fieldset", null, 
+                    React.createElement("div", {className: "input-group"}, 
+                        React.createElement("input", {type: "text", className: "form-control", placeholder: "キーワード"}), 
+                        React.createElement("span", {className: "input-group-btn"}, 
+                            React.createElement("button", {className: "btn btn-default", type: "button"}, "Go!")
+                        )
+                    )
+                )
+            )
         )
     }
 });
@@ -133,7 +146,16 @@ var Genre = React.createClass({displayName: "Genre",
             'genre': true
         });
         return (
-            React.createElement("div", {className: classes})
+            React.createElement("div", {className: classes}, 
+                React.createElement("fieldset", null, 
+                    React.createElement("div", {className: "input-group"}, 
+                        React.createElement("input", {type: "text", className: "form-control", placeholder: "キーワード"}), 
+                        React.createElement("span", {className: "input-group-btn"}, 
+                            React.createElement("button", {className: "btn btn-default", type: "button"}, "Go!")
+                        )
+                    )
+                )
+            )
         )
     }
 });
@@ -146,6 +168,19 @@ var Neighbor = React.createClass({displayName: "Neighbor",
         });
         return (
             React.createElement("div", {className: classes})
+        )
+    }
+});
+
+var MenuRegistration = React.createClass({displayName: "MenuRegistration",
+    render: function() {
+        var classes = React.addons.classSet({
+            'hidden': !this.props.visible,
+            'menu-registration': true
+        });
+        return (
+            React.createElement("div", {className: classes}
+            )
         )
     }
 });
@@ -187,6 +222,52 @@ var Page = React.createClass({displayName: "Page",
     }
 });
 
+var GlobalMenu = React.createClass({displayName: "GlobalMenu",
+    getInitialState: function() {
+        return {
+            data: [
+                { text: "ログイン", icon: "log-in" },
+                { text: "設定", icon: "cog" },
+            ],
+            listVisible: false,
+        };
+    },
+    onClick: function() {
+        this.setState({ listVisible: !this.state.listVisible });
+        console.log(this.state.listVisible);
+    },
+    render: function() {
+        var items = this.state.data.map(function(data) {
+            return (
+                React.createElement("li", {key: data.text, className: "global-menu-item"}, 
+                    React.createElement("a", {className: "global-menu-item", href: ""}, 
+                        React.createElement("i", {className: "glyphicon glyphicon-" + data.icon}), 
+                        React.createElement("span", {className: "global-menu-item-text"}, data.text)
+                    )
+                )
+            )
+        });
+        return (
+            React.createElement("div", {className: "GlobalMenu"}, 
+                React.createElement("a", {href: "#", className: "global-menu-button btn btn-default", onClick: this.onClick}, 
+                    React.createElement("i", {className: "glyphicon glyphicon-menu-hamburger"})
+                ), 
+                React.createElement(TransitionGroup, {transitionName: "global-menu-list"}, 
+                this.state.listVisible ?
+                    React.createElement("ul", {key: "global-menu-list", className: "global-menu-list"}, 
+                        items
+                    ) : null
+                
+                )
+            )
+        )
+    }
+});
+
+React.render(
+    React.createElement(GlobalMenu, null),
+    document.getElementById("global-menu")
+);
 React.render(
     React.createElement(Page, null),
     document.getElementById('page')

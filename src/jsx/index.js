@@ -49,27 +49,34 @@ var GuestMenu = React.createClass({
     getInitialState: function() {
         return {
             active: false,
-            wordSearchSelected: false,
-            genreSelected: false,
-            neighborSelected: false
+            data: [
+                { itemName: "word-search", iconName: "search", itemText: "ワード検索" },
+                { itemName: "genre", iconName: "tags", itemText: "ジャンル別" },
+                { itemName: "neighbor", iconName: "home", itemText: "おとなり" },
+                { itemName: "menu-registration", iconName: "plus", itemText: "メニュー追加" },
+            ]
         };
     },
     handleItemClick: function(e) {
         this.props.onActiveChange({ active: true });
         this.setState({
             active: true,
-            wordSearchSelected: e.itemName === 'word-search',
-            genreSelected: e.itemName === 'genre',
-            neighborSelected: e.itemName === 'neighbor'
+            activeMenuName: e.itemName,
         });
     },
     handleTopBoxShow: function() {
         this.props.onActiveChange({ active: false });
         this.setState({
-            active: false
+            active: false,
         });
     },
     render: function() {
+        var self = this;
+        var items = this.state.data.map(function(data) {
+            return (
+                <MenuItem key={data.itemName} itemName={data.itemName} iconName={data.iconName} itemText={data.itemText} onClick={self.handleItemClick} />
+            )
+        });
         return (
             <div id="guest-menu">
                 <TransitionGroup transitionName="top-box">
@@ -81,15 +88,14 @@ var GuestMenu = React.createClass({
                     }
                 </TransitionGroup>
                 <div className="menu-items">
-                    <MenuItem itemName="word-search" iconName="search" itemText="ワード検索" onClick={this.handleItemClick} />
-                    <MenuItem itemName="genre" iconName="tags" itemText="ジャンル別" onClick={this.handleItemClick} />
-                    <MenuItem itemName="neighbor" iconName="home" itemText="おとなり" onClick={this.handleItemClick} />
+                    {items}
                 </div>
                 {this.state.active ?
                     <div className="contents">
-                        <WordSearch visible={this.state.wordSearchSelected} />
-                        <Genre visible={this.state.genreSelected} />
-                        <Neighbor visible={this.state.neighborSelected} />
+                        <WordSearch visible={this.state.activeMenuName === "word-search"} />
+                        <Genre visible={this.state.activeMenuName === "genre"} />
+                        <Neighbor visible={this.state.activeMenuName === "neighbor"} />
+                        <MenuRegistration visible={this.state.activeMenuName === "menu-registration"} />
                     </div> : null
                 }
             </div>
@@ -103,11 +109,9 @@ var MenuItem = React.createClass({
         this.props.onClick( { itemTag: itemTag[0], itemName: this.props.itemName });
     },
     render: function() {
-        var classes = React.addons.classSet('menu-item', this.props.itemName);
-        var icon = React.addons.classSet('glyphicon', 'glyphicon-' + this.props.iconName);
         return (
-            <div className={classes} onClick={this.handleClick}>
-                <i className={icon}></i>
+            <div className={"menu-item " + this.props.itemName} onClick={this.handleClick}>
+                <i className={"glyphicon glyphicon-" + this.props.iconName}></i>
                 {this.props.itemText}
             </div>
         )
@@ -121,7 +125,16 @@ var WordSearch = React.createClass({
             'word-search': true
         });
         return (
-            <div className={classes} />
+            <div className={classes}>
+                <fieldset>
+                    <div className="input-group">
+                        <input type="text" className="form-control" placeholder="キーワード" />
+                        <span className="input-group-btn">
+                            <button className="btn btn-default" type="button">Go!</button>
+                        </span>
+                    </div>
+                </fieldset>
+            </div>
         )
     }
 });
@@ -133,7 +146,16 @@ var Genre = React.createClass({
             'genre': true
         });
         return (
-            <div className={classes} />
+            <div className={classes}>
+                <fieldset>
+                    <div className="input-group">
+                        <input type="text" className="form-control" placeholder="キーワード" />
+                        <span className="input-group-btn">
+                            <button className="btn btn-default" type="button">Go!</button>
+                        </span>
+                    </div>
+                </fieldset>
+            </div>
         )
     }
 });
@@ -146,6 +168,19 @@ var Neighbor = React.createClass({
         });
         return (
             <div className={classes} />
+        )
+    }
+});
+
+var MenuRegistration = React.createClass({
+    render: function() {
+        var classes = React.addons.classSet({
+            'hidden': !this.props.visible,
+            'menu-registration': true
+        });
+        return (
+            <div className={classes}>
+            </div>
         )
     }
 });
@@ -187,6 +222,52 @@ var Page = React.createClass({
     }
 });
 
+var GlobalMenu = React.createClass({
+    getInitialState: function() {
+        return {
+            data: [
+                { text: "ログイン", icon: "log-in" },
+                { text: "設定", icon: "cog" },
+            ],
+            listVisible: false,
+        };
+    },
+    onClick: function() {
+        this.setState({ listVisible: !this.state.listVisible });
+        console.log(this.state.listVisible);
+    },
+    render: function() {
+        var items = this.state.data.map(function(data) {
+            return (
+                <li key={data.text} className="global-menu-item">
+                    <a className="global-menu-item" href="">
+                        <i className={"glyphicon glyphicon-" + data.icon} />
+                        <span className="global-menu-item-text">{data.text}</span>
+                    </a>
+                </li>
+            )
+        });
+        return (
+            <div className="GlobalMenu">
+                <a href="#" className="global-menu-button btn btn-default" onClick={this.onClick}>
+                    <i className="glyphicon glyphicon-menu-hamburger" />
+                </a>
+                <TransitionGroup transitionName="global-menu-list">
+                {this.state.listVisible ?
+                    <ul key={"global-menu-list"} className="global-menu-list">
+                        {items}
+                    </ul> : null
+                }
+                </TransitionGroup>
+            </div>
+        )
+    }
+});
+
+React.render(
+    <GlobalMenu />,
+    document.getElementById("global-menu")
+);
 React.render(
     <Page />,
     document.getElementById('page')

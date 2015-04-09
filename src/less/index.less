@@ -5,6 +5,60 @@
     text-shadow: 0 0 2px @shadow-color, 0 0 2px @shadow-color, 0 0 2px @shadow-color, 0 0 2px @shadow-color;
 }
 
+#global-menu {
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    z-index: 100;
+    .global-menu-button {
+        position: fixed;
+        top: 3px;
+        right: -6px;
+        padding-right: 10px;
+        font-size: 150%;
+    }
+    .global-menu-list {
+        position: fixed;
+        background: rgba(255,255,255,.6);
+        margin: 0;
+        padding: 0;
+        top: 50px;
+        min-width: 200px;
+        right: 0;
+
+        font-size: 150%;
+    }
+    li.global-menu-item {
+        list-style: none;
+        margin: 1px;
+        padding-top: 2px;
+        padding-left: 4px;
+        padding-bottom: 1px;
+        background: rgba(0,0,0,.9);
+        a.global-menu-item {
+            color: rgba(255,255,255,1);
+        }
+    }
+    .global-menu-item-text {
+        margin-left: 8px;
+    }
+}
+
+.global-menu-list-enter {
+    opacity: 0;
+    transition: opacity .2s ease-out;
+}
+.global-menu-list-enter-active {
+    opacity: 1;
+}
+.global-menu-list-leave {
+    opacity: 1;
+    transition: opacity .2s ease-in;
+}
+.global-menu-list-leave-active {
+    opacity: 0;
+}
+
 @top-box-height: 400px;
 #top-box {
     height: @top-box-height;
@@ -25,10 +79,10 @@
 .top-box-enter {
     height: 0 !important;
     opacity: 0;
-    transition: all .3s ease-in 0s
+    transition: all .2s ease-in 0s
 }
 
-.top-box-enter.top-box-enter-active {
+.top-box-enter-active {
     height: @top-box-height !important;
     opacity: 1;
 }
@@ -36,10 +90,10 @@
 .top-box-leave {
     height: @top-box-height !important;
     opacity: 1;
-    transition: all .3s ease-in 0s
+    transition: all .2s ease-in 0s
 }
 
-.top-box-leave.top-box-leave-active {
+.top-box-leave-active {
     height: 0px !important;
     opacity: 0;
 }
@@ -80,6 +134,7 @@
 @word-search-color: rgba(200,255,200,1);
 @genre-color: rgba(255,200,200,1);
 @neighbor-color: rgba(200,200,255,1);
+@menu-registration-color: rgba(200,255,255,1);
 
 #guest-menu {
     text-align: center;
@@ -99,13 +154,25 @@
     .neighbor {
         background: @neighbor-color;
     }
+    .menu-registration {
+        background: @menu-registration-color;
+    }
 
     .contents {
         margin-top: -50px;
         > div {
-            color: @word-search-color;
-            height: 300px;
+            min-height: 300px;
+            padding-top: 55px;
+            padding-left: 5px;
+            padding-right: 5px;
+            padding-bottom: 5px;
         }
+    }
+}
+
+.menu-items {
+    > .menu-registration {
+        margin-left: 30px;
     }
 }
 
