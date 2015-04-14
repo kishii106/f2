@@ -29,6 +29,10 @@ tasks:
   commands:
   - minifyjs -m -i ${GOEMON_TARGET_FILE} -o ${GOEMON_TARGET_DIR}/${GOEMON_TARGET_NAME}.js.min
 
+- match: './assets/js/common/indicator.js'
+  commands:
+  - minifyjs -m -i ${GOEMON_TARGET_FILE} -o ${GOEMON_TARGET_DIR}/${GOEMON_TARGET_NAME}.js.min
+
 - match: './assets/**/*'
   commands:
   - go-bindata -pkg=bindata -o=src/bindata/bindata.go --ignore=".*.go|.*.less|\.module-cache|.*.un~|\.git|.DS_Store|jsx" assets/...

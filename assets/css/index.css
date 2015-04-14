@@ -50,7 +50,7 @@
 .GlobalMenu .global-menu-list-leave-active {
   right: -100px;
 }
-#top-box {
+.TopBox {
   height: 400px;
   overflow: hidden;
   /*
@@ -82,7 +82,7 @@
   height: 0px !important;
   opacity: 0;
 }
-#catch-copy {
+.catch-copy {
   color: #ffffc8;
   /* 参考・http://kumacrow.blog111.fc2.com/blog-entry-278.html */
   text-shadow: 0 0 2px #9b3200, 0 0 2px #9b3200, 0 0 2px #9b3200, 0 0 2px #9b3200;
@@ -91,7 +91,7 @@
   padding-top: 10px;
   padding-left: 20px;
 }
-#login-box {
+.LoginBox {
   padding: 10px;
   margin: 0 auto;
   width: 90%;
@@ -99,17 +99,17 @@
   border-radius: 4px;
   background: rgba(200, 150, 50, 0.8);
 }
-#login-box input {
+.LoginBox input {
   text-align: center;
 }
-#login-box div.checkbox {
+.LoginBox div.checkbox {
   margin-top: 20px;
   margin-bottom: 20px;
 }
-#login-box .login-text {
+.LoginBox .login-text {
   color: #5050c8;
 }
-#login-box .login-text:hover {
+.LoginBox .login-text:hover {
   color: #ffff00;
 }
 #contents {
