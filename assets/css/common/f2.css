@@ -18,7 +18,8 @@ a:hover {
   width: 100%;
   text-align: center;
   color: #ffffc8;
-  background: rgba(200, 150, 50, 0.9);
+  background: rgba(200, 150, 50, 0.8);
+  z-index: 500;
   /* 参考・http://kumacrow.blog111.fc2.com/blog-entry-278.html */
   text-shadow: 0 0 2px #c89632, 0 0 2px #c89632, 0 0 2px #c89632, 0 0 2px #c89632;
 }
@@ -41,4 +42,9 @@ img.logo {
 }
 #footer > a {
   color: inherit;
+}
+.indicator {
+  position: absolute;
+  z-index: 1000;
+  display: none;
 }

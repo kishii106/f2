@@ -123,11 +123,18 @@ var Indicator = React.createClass({displayName: "Indicator",
         indicator.width(button.outerWidth());
         indicator.css(button.position());
         indicator.show().activity();
-        console.log(button.position());
-        console.log(indicator.position());
+    },
+    handle: function(e) {
+        console.log("handle");
+        e.stopPropagation();
+    },
+    componentDidMount: function() {
+        $(document).on('click', function(e) {
+            console.log(e);
+        });
     },
     render: function() {
-        return React.createElement("span", {className: "Indicator", ref: "indicator", style: {'position': 'absolute', 'zIndex': '900'}})
+        return React.createElement("span", {className: "Indicator", ref: "indicator", onClick: this.handle, style: {'position': 'absolute', 'zIndex': '900', 'cursor': 'default'}})
     },
 });
 
@@ -165,8 +172,8 @@ var WordSearch = React.createClass({displayName: "WordSearch",
     render: function() {
         var classes = React.addons.classSet({
             'hidden': !this.props.visible,
+            'word-search': true,
             'container': true,
-            'word-search': true
         });
         var menuList = this.state.menuList.map(function(menu) {
             return (
@@ -183,9 +190,9 @@ var WordSearch = React.createClass({displayName: "WordSearch",
                         React.createElement("input", {type: "text", ref: "keyword", className: "form-control", placeholder: "キーワード"}), 
                         React.createElement("span", {className: "input-group-btn"}, 
                             React.createElement("button", {ref: "button", className: "btn btn-default", type: "button", onClick: this.handleSearch}, 
-                                React.createElement("i", {className: "glyphicon glyphicon-search"}), 
-                                React.createElement(Indicator, {buttonRef: this.state.buttonRef, active: this.state.indicatorActive})
-                            )
+                                React.createElement("i", {className: "glyphicon glyphicon-search"})
+                            ), 
+                            React.createElement(Indicator, {buttonRef: this.state.buttonRef, active: this.state.indicatorActive})
                         )
                     )
                 ), 
@@ -216,12 +223,14 @@ var Genre = React.createClass({displayName: "Genre",
         this.setState({ buttonRef: React.findDOMNode(this.refs.button) });
     },
     handleClick: function() {
+        console.log(arguments);
         this.setState({indicatorActive: true});
     },
     render: function() {
         var classes = React.addons.classSet({
             'hidden': !this.props.visible,
-            'genre': true
+            'genre': true,
+            'container': true,
         });
         return (
             React.createElement("div", {className: classes}, 
@@ -230,9 +239,9 @@ var Genre = React.createClass({displayName: "Genre",
                         React.createElement("input", {type: "text", className: "form-control", placeholder: "ジャンル"}), 
                         React.createElement("span", {className: "input-group-btn"}, 
                             React.createElement("button", {className: "btn btn-default", type: "button", ref: "button", onClick: this.handleClick}, 
-                                "Go!", 
-                                React.createElement(Indicator, {buttonRef: this.state.buttonRef, active: this.state.indicatorActive})
-                            )
+                                "Go!"
+                            ), 
+                            React.createElement(Indicator, {buttonRef: this.state.buttonRef, active: this.state.indicatorActive})
                         )
                     )
                 )
@@ -245,7 +254,8 @@ var Neighbor = React.createClass({displayName: "Neighbor",
     render: function() {
         var classes = React.addons.classSet({
             'hidden': !this.props.visible,
-            'neighbor': true
+            'neighbor': true,
+            'container': true,
         });
         return (
             React.createElement("div", {className: classes})
@@ -257,7 +267,8 @@ var MenuRegistration = React.createClass({displayName: "MenuRegistration",
     render: function() {
         var classes = React.addons.classSet({
             'hidden': !this.props.visible,
-            'menu-registration': true
+            'menu-registration': true,
+            'container': true,
         });
         return (
             React.createElement("div", {className: classes}

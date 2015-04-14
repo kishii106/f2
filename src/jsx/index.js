@@ -123,11 +123,18 @@ var Indicator = React.createClass({
         indicator.width(button.outerWidth());
         indicator.css(button.position());
         indicator.show().activity();
-        console.log(button.position());
-        console.log(indicator.position());
+    },
+    handle: function(e) {
+        console.log("handle");
+        e.stopPropagation();
+    },
+    componentDidMount: function() {
+        $(document).on('click', function(e) {
+            console.log(e);
+        });
     },
     render: function() {
-        return <span className="Indicator" ref="indicator" style={{'position': 'absolute', 'zIndex': '900'}} />
+        return <span className="Indicator" ref="indicator" onClick={this.handle} style={{'position': 'absolute', 'zIndex': '900', 'cursor': 'default'}} />
     },
 });
 
@@ -165,8 +172,8 @@ var WordSearch = React.createClass({
     render: function() {
         var classes = React.addons.classSet({
             'hidden': !this.props.visible,
+            'word-search': true,
             'container': true,
-            'word-search': true
         });
         var menuList = this.state.menuList.map(function(menu) {
             return (
@@ -184,8 +191,8 @@ var WordSearch = React.createClass({
                         <span className="input-group-btn">
                             <button ref="button" className="btn btn-default" type="button" onClick={this.handleSearch}>
                                 <i className="glyphicon glyphicon-search" />
-                                <Indicator buttonRef={this.state.buttonRef} active={this.state.indicatorActive} />
                             </button>
+                            <Indicator buttonRef={this.state.buttonRef} active={this.state.indicatorActive} />
                         </span>
                     </div>
                 </fieldset>
@@ -216,12 +223,14 @@ var Genre = React.createClass({
         this.setState({ buttonRef: React.findDOMNode(this.refs.button) });
     },
     handleClick: function() {
+        console.log(arguments);
         this.setState({indicatorActive: true});
     },
     render: function() {
         var classes = React.addons.classSet({
             'hidden': !this.props.visible,
-            'genre': true
+            'genre': true,
+            'container': true,
         });
         return (
             <div className={classes}>
@@ -231,8 +240,8 @@ var Genre = React.createClass({
                         <span className="input-group-btn">
                             <button className="btn btn-default" type="button" ref="button" onClick={this.handleClick}>
                                 Go!
-                                <Indicator buttonRef={this.state.buttonRef} active={this.state.indicatorActive} />
                             </button>
+                            <Indicator buttonRef={this.state.buttonRef} active={this.state.indicatorActive} />
                         </span>
                     </div>
                 </fieldset>
@@ -245,7 +254,8 @@ var Neighbor = React.createClass({
     render: function() {
         var classes = React.addons.classSet({
             'hidden': !this.props.visible,
-            'neighbor': true
+            'neighbor': true,
+            'container': true,
         });
         return (
             <div className={classes} />
@@ -257,7 +267,8 @@ var MenuRegistration = React.createClass({
     render: function() {
         var classes = React.addons.classSet({
             'hidden': !this.props.visible,
-            'menu-registration': true
+            'menu-registration': true,
+            'container': true,
         });
         return (
             <div className={classes}>
