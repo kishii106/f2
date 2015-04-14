@@ -5,6 +5,7 @@ body {
 ul {
   margin: 0;
   padding: 0;
+  list-style: none;
 }
 a,
 a:visited {
@@ -43,8 +44,17 @@ img.logo {
 #footer > a {
   color: inherit;
 }
-.indicator {
-  position: absolute;
-  z-index: 1000;
-  display: none;
+.fade-out-leave {
+  opacity: 1;
+  transition: opacity 0.3s ease-in;
+}
+.fade-out-leave-active {
+  opacity: 0;
+}
+.fade-in-enter {
+  opacity: 0;
+  transition: opacity 0.3s ease-in;
+}
+.fade-in-enter-active {
+  opacity: 1;
 }

@@ -143,66 +143,26 @@
 @neighbor-color: rgba(200,200,255,1);
 @menu-registration-color: rgba(200,255,255,1);
 
-#guest-menu {
-    text-align: center;
-    padding-bottom: 50px;
-    div.selected {
-        color: @menu-selected-color;
-    }
+.Genre {
+    background: @genre-color;
+}
 
-    .word-search {
-        background: @word-search-color;
-    }
-
-    .genre {
-        background: @genre-color;
-    }
-
-    .neighbor {
-        background: @neighbor-color;
-    }
-    .menu-registration {
-        background: @menu-registration-color;
-    }
-
-    .contents {
-        margin-top: -50px;
-        > div {
-            min-height: 300px;
-            padding-top: 55px;
-            padding-left: 5px;
-            padding-right: 5px;
-            padding-bottom: 5px;
+.Neighbor {
+    background: @neighbor-color;
+    padding: 4px;
+    li {
+        display: inline-block;
+        .menu-name {
+            font-weight: 200%;
+            margin: 1px;
+            padding: 2px;
+            background: rgba(240,240,255,1);
+            border: solid 1px rgba(200,200,200,1);
+            border-radius: 3px;
         }
     }
 }
 
-.menu-items {
-    > .menu-registration {
-        margin-left: 30px;
-    }
-}
-
-.menu-item {
-    @menu-item-size: 80px;
-    display: inline-block;
-    height: @menu-item-size;
-    width: @menu-item-size;
-    padding-top: 20px;
-    border-radius: 50%;
-    text-align: center;
-    cursor: pointer;
-    margin: 6px;
-/*    box-shadow: 2px 2px 3px rgba(0,0,0,.5); */
-    color: rgba(130,130,130,1);
-    white-space: nowrap;
-    > i {
-        display: block;
-        font-size: 150%;
-        margin-bottom: 5px;
-    }
-}
-
-.menu-item:hover {
-    color: @menu-selected-color !important;
+.RoleSwitcher {
+    background: red;
 }

@@ -3,14 +3,16 @@
 
 window.LoginBox = React.createClass({
     getInitialState: function() {
-        return { autoLogin: true };
+        return {
+            autoLogin: true,
+            visible: true,
+        };
     },
     componentDidMount: function() {
         $('#login-box .family').focus();
     },
     handleLogin: function(e) {
-        alert('ログイン処理：未実装...');
-        e.preventDefault();
+        this.props.onLoginSucceeed();
     },
     handleSignIn: function(e) {
         alert('サインイン処理：未実装...');

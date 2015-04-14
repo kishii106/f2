@@ -17,6 +17,7 @@ func main() {
     goji.Get("", http.RedirectHandler("/", http.StatusSeeOther))
     goji.Get("/", assets.BasicLayoutHtmlHandler("html/index.html"))
     goji.Get("/menu/", handler.GetAllMenus);
+    goji.Get("/neighbor-menu/", handler.GetNeighborMenus);
 
     goji.Get("/sandbox", assets.BasicLayoutHtmlHandler("html/sandbox.html"))
 

@@ -17,7 +17,7 @@ window.Genre = React.createClass({displayName: "Genre",
     render: function() {
         var classes = React.addons.classSet({
             'hidden': !this.props.visible,
-            'genre': true,
+            'Genre': true,
             'container': true,
         });
         return (

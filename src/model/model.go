@@ -3,6 +3,8 @@ package model
 import (
     "os"
     "time"
+    "math/rand"
+    "fmt"
 
     _ "github.com/mattn/go-sqlite3"
     _ "github.com/lib/pq"
@@ -15,26 +17,6 @@ var (
     db *genmai.DB
 )
 
-type Menu struct {
-    Id   int64  `db:"pk" json:"id"`
-    Name string `json:"name"`
-    Created time.Time `json:"created"`
-    Updated time.Time `json:"updated"`
-}
-
-func (menu *Menu) BeforeInsert() error {
-    n := time.Now()
-    menu.Created = n
-    menu.Updated = n
-    return nil
-}
-
-func (menu *Menu) BeforeUpdate() error {
-    n := time.Now()
-    menu.Updated = n
-    return nil
-}
-
 func init() {
     var err error
     db, err = createDb()
@@ -45,10 +27,11 @@ func init() {
     if err := db.CreateTableIfNotExists(&Menu{}); err != nil {
         panic(err)
     }
-    _, err2 := db.Insert(&Menu{Name: "name"})
-    if err2 != nil {
-        panic(err2)
+    if err := db.CreateTableIfNotExists(&User{}); err != nil {
+        panic(err)
     }
+
+    insertTestData()
 }
 
 func createDb() (*genmai.DB, error) {
@@ -61,11 +44,12 @@ func createDb() (*genmai.DB, error) {
     panic(env.DbKind())
 }
 
-func GetAllMenus() []Menu {
-    var ret []Menu
-    err := db.Select(&ret)
-    if err != nil {
+func insertTestData() {
+    rand.Seed(time.Now().UnixNano())
+    if _, err := db.Insert(&Menu{Name: fmt.Sprintf("%d", rand.Int31n(9999)), PopularLevel: rand.Int31n(99) + 1}); err != nil {
         panic(err)
     }
-    return ret
+    if _, err := db.Insert(&User{Name: "jabara", Password: "jabara"}); err != nil {
+        fmt.Println(err)
+    }
 }
