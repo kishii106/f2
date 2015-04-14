@@ -110,27 +110,68 @@ var MenuItem = React.createClass({
     }
 });
 
+var Indicator = React.createClass({
+    componentDidUpdate: function() {
+        var indicator = $(React.findDOMNode(this.refs.indicator));
+        if (!this.props.active) {
+            indicator.activity(false).hide();
+            return;
+        }
+
+        var button = $(React.findDOMNode(this.props.buttonRef));
+        indicator.height(button.outerHeight());
+        indicator.width(button.outerWidth());
+        indicator.css(button.position());
+        indicator.show().activity();
+        console.log(button.position());
+        console.log(indicator.position());
+    },
+    render: function() {
+        return <span className="Indicator" ref="indicator" style={{'position': 'absolute', 'zIndex': '900'}} />
+    },
+});
+
 var WordSearch = React.createClass({
     getInitialState: function() {
         return {
-            menuList: []
+            menuList: [],
+            indicatorActive: false,
+            buttonRef: null,
         };
     },
+    componentDidMount: function() {
+        this.setState({ buttonRef: React.findDOMNode(this.refs.button) });
+    },
     handleSearch: function() {
+        this.setState({indicatorActive: true});
+
         var keyword = React.findDOMNode(this.refs.keyword).value;
         var self = this;
-        $.get("/menu/", { keyword: keyword }, function(data) {
-            self.setState({menuList: data});
+        $.ajax({
+            url: "/menu/",
+            type: "get",
+            data: { keyword: keyword },
+            success: function(data) {
+                self.setState({menuList: data});
+            },
+            fail: function() {
+                console.log(arguments);
+            },
+            complete: function() {
+                this.setState({indicatorActive: false});
+            }.bind(this),
         });
     },
     render: function() {
         var classes = React.addons.classSet({
             'hidden': !this.props.visible,
+            'container': true,
             'word-search': true
         });
         var menuList = this.state.menuList.map(function(menu) {
             return (
-                <tr>
+                <tr key={menu.id}>
+                    <td>{menu.id}</td>
                     <td>{menu.name}</td>
                 </tr>
             )
@@ -141,14 +182,23 @@ var WordSearch = React.createClass({
                     <div className="input-group">
                         <input type="text" ref="keyword" className="form-control" placeholder="キーワード" />
                         <span className="input-group-btn">
-                            <button className="btn btn-default" type="button" onClick={this.handleSearch}>
+                            <button ref="button" className="btn btn-default" type="button" onClick={this.handleSearch}>
                                 <i className="glyphicon glyphicon-search" />
+                                <Indicator buttonRef={this.state.buttonRef} active={this.state.indicatorActive} />
                             </button>
                         </span>
                     </div>
                 </fieldset>
-                <table className="table">
-                    {menuList}
+                <table className="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>メニュー名</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {menuList}
+                    </tbody>
                 </table>
             </div>
         )
@@ -156,6 +206,18 @@ var WordSearch = React.createClass({
 });
 
 var Genre = React.createClass({
+    getInitialState: function() {
+        return {
+            buttonRef: null,
+            indicatorActive: false,
+        }
+    },
+    componentDidMount: function() {
+        this.setState({ buttonRef: React.findDOMNode(this.refs.button) });
+    },
+    handleClick: function() {
+        this.setState({indicatorActive: true});
+    },
     render: function() {
         var classes = React.addons.classSet({
             'hidden': !this.props.visible,
@@ -165,9 +227,12 @@ var Genre = React.createClass({
             <div className={classes}>
                 <fieldset>
                     <div className="input-group">
-                        <input type="text" className="form-control" placeholder="キーワード" />
+                        <input type="text" className="form-control" placeholder="ジャンル" />
                         <span className="input-group-btn">
-                            <button className="btn btn-default" type="button">Go!</button>
+                            <button className="btn btn-default" type="button" ref="button" onClick={this.handleClick}>
+                                Go!
+                                <Indicator buttonRef={this.state.buttonRef} active={this.state.indicatorActive} />
+                            </button>
                         </span>
                     </div>
                 </fieldset>

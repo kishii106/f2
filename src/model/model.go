@@ -16,6 +16,7 @@ var (
 )
 
 type Menu struct {
+    Id   int64  `db:"pk" json:"id"`
     Name string `json:"name"`
     Created time.Time `json:"created"`
     Updated time.Time `json:"updated"`

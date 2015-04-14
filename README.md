@@ -38,6 +38,14 @@ $ npm install -g uglifycss
 
 これで```uglifycss```というコマンドがインストールされる.
 
+# 開発中に実行するコマンド
+
+``` goemon ``` でファイルの変更を検出しつつ、変更が入ったらWebサーバを再起動する． 以下のコマンドを実行してけばよい.
+
+```
+goemon go run src/main.go -bind=:8081
+```
+
 # 禁止事項
 
 ## assets内のファイルに ``` logo ``` という文字列を含むファイルを作ること
@@ -56,4 +64,9 @@ $ npm install -g uglifycss
 ```
 $ GOOS=linux GOARCH=amd64 go build -o f2 src/main.go
 ```
+
+# FAQ
+
+## ```too many open files```が出てgoemonが動作しない
+[http://d.hatena.ne.jp/hide-K/20100125/1264424614](http://d.hatena.ne.jp/hide-K/20100125/1264424614)を見てファイルオープン数の上限を上げること.
 

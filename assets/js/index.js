@@ -110,27 +110,68 @@ var MenuItem = React.createClass({displayName: "MenuItem",
     }
 });
 
+var Indicator = React.createClass({displayName: "Indicator",
+    componentDidUpdate: function() {
+        var indicator = $(React.findDOMNode(this.refs.indicator));
+        if (!this.props.active) {
+            indicator.activity(false).hide();
+            return;
+        }
+
+        var button = $(React.findDOMNode(this.props.buttonRef));
+        indicator.height(button.outerHeight());
+        indicator.width(button.outerWidth());
+        indicator.css(button.position());
+        indicator.show().activity();
+        console.log(button.position());
+        console.log(indicator.position());
+    },
+    render: function() {
+        return React.createElement("span", {className: "Indicator", ref: "indicator", style: {'position': 'absolute', 'zIndex': '900'}})
+    },
+});
+
 var WordSearch = React.createClass({displayName: "WordSearch",
     getInitialState: function() {
         return {
-            menuList: []
+            menuList: [],
+            indicatorActive: false,
+            buttonRef: null,
         };
     },
+    componentDidMount: function() {
+        this.setState({ buttonRef: React.findDOMNode(this.refs.button) });
+    },
     handleSearch: function() {
+        this.setState({indicatorActive: true});
+
         var keyword = React.findDOMNode(this.refs.keyword).value;
         var self = this;
-        $.get("/menu/", { keyword: keyword }, function(data) {
-            self.setState({menuList: data});
+        $.ajax({
+            url: "/menu/",
+            type: "get",
+            data: { keyword: keyword },
+            success: function(data) {
+                self.setState({menuList: data});
+            },
+            fail: function() {
+                console.log(arguments);
+            },
+            complete: function() {
+                this.setState({indicatorActive: false});
+            }.bind(this),
         });
     },
     render: function() {
         var classes = React.addons.classSet({
             'hidden': !this.props.visible,
+            'container': true,
             'word-search': true
         });
         var menuList = this.state.menuList.map(function(menu) {
             return (
-                React.createElement("tr", null, 
+                React.createElement("tr", {key: menu.id}, 
+                    React.createElement("td", null, menu.id), 
                     React.createElement("td", null, menu.name)
                 )
             )
@@ -141,14 +182,23 @@ var WordSearch = React.createClass({displayName: "WordSearch",
                     React.createElement("div", {className: "input-group"}, 
                         React.createElement("input", {type: "text", ref: "keyword", className: "form-control", placeholder: "キーワード"}), 
                         React.createElement("span", {className: "input-group-btn"}, 
-                            React.createElement("button", {className: "btn btn-default", type: "button", onClick: this.handleSearch}, 
-                                React.createElement("i", {className: "glyphicon glyphicon-search"})
+                            React.createElement("button", {ref: "button", className: "btn btn-default", type: "button", onClick: this.handleSearch}, 
+                                React.createElement("i", {className: "glyphicon glyphicon-search"}), 
+                                React.createElement(Indicator, {buttonRef: this.state.buttonRef, active: this.state.indicatorActive})
                             )
                         )
                     )
                 ), 
-                React.createElement("table", {className: "table"}, 
-                    menuList
+                React.createElement("table", {className: "table table-striped"}, 
+                    React.createElement("thead", null, 
+                        React.createElement("tr", null, 
+                            React.createElement("th", null, "ID"), 
+                            React.createElement("th", null, "メニュー名")
+                        )
+                    ), 
+                    React.createElement("tbody", null, 
+                        menuList
+                    )
                 )
             )
         )
@@ -156,6 +206,18 @@ var WordSearch = React.createClass({displayName: "WordSearch",
 });
 
 var Genre = React.createClass({displayName: "Genre",
+    getInitialState: function() {
+        return {
+            buttonRef: null,
+            indicatorActive: false,
+        }
+    },
+    componentDidMount: function() {
+        this.setState({ buttonRef: React.findDOMNode(this.refs.button) });
+    },
+    handleClick: function() {
+        this.setState({indicatorActive: true});
+    },
     render: function() {
         var classes = React.addons.classSet({
             'hidden': !this.props.visible,
@@ -165,9 +227,12 @@ var Genre = React.createClass({displayName: "Genre",
             React.createElement("div", {className: classes}, 
                 React.createElement("fieldset", null, 
                     React.createElement("div", {className: "input-group"}, 
-                        React.createElement("input", {type: "text", className: "form-control", placeholder: "キーワード"}), 
+                        React.createElement("input", {type: "text", className: "form-control", placeholder: "ジャンル"}), 
                         React.createElement("span", {className: "input-group-btn"}, 
-                            React.createElement("button", {className: "btn btn-default", type: "button"}, "Go!")
+                            React.createElement("button", {className: "btn btn-default", type: "button", ref: "button", onClick: this.handleClick}, 
+                                "Go!", 
+                                React.createElement(Indicator, {buttonRef: this.state.buttonRef, active: this.state.indicatorActive})
+                            )
                         )
                     )
                 )
