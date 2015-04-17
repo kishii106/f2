@@ -9,7 +9,7 @@ window.Indicator = React.createClass({displayName: "Indicator",
             return;
         }
 
-        var button = $(React.findDOMNode(this.props.buttonRef));
+        var button = $(this.props.buttonRef);
         indicator.height(button.outerHeight());
         indicator.width(button.outerWidth());
         indicator.css(button.position());

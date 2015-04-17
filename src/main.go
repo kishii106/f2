@@ -19,6 +19,8 @@ func main() {
     goji.Get("/menu/", handler.GetAllMenus);
     goji.Get("/neighbor-menu/", handler.GetNeighborMenus);
 
+    goji.Post("/login/try", handler.TryLogin)
+
     goji.Get("/sandbox", assets.BasicLayoutHtmlHandler("html/sandbox.html"))
 
     goji.Get("/css/*", assets.ContentTypeHandler("text/css"))

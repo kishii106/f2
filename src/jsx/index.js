@@ -14,13 +14,10 @@ var TopBox = React.createClass({
         this.props.onLoginSucceeed();
     },
     render: function() {
-        var classes = React.addons.classSet({
-            "TopBox": true,
-            "hidden": !this.state.visible,
-        });
         return (
-            <TransitionGroup transitionName="fade-out">
-                <div key={"top-box_" + this.state.visible} className={classes}>
+            <TransitionGroup transitionName="transition-fade">
+                {this.state.visible ?
+                <div key={"top-box_" + this.state.visible} className="TopBox">
                     <div className="catch-copy">
                         <h2>今日、なに食べる？</h2>
                         <p>ふ〜どふぁいんだ〜がメニューを提案します。</p>
@@ -28,28 +25,36 @@ var TopBox = React.createClass({
                     </div>
                     <LoginBox onLoginSucceeed={this.handleLoginSucceeded} />
                 </div>
+                : null
+                }
             </TransitionGroup>
         )
     }
 });
 
 var RoleSwitcher = React.createClass({
+    getInitialState: function() {
+        return {
+            visible: this.props.visible
+        };
+    },
+    onClick: function() {
+        console.log(arguments);
+        this.setState({ visible: !this.state.visible });
+    },
     render: function() {
-        var classes = React.addons.classSet({
-            "RoleSwitcher": true,
-            "hidden": !this.props.visible,
-            "container": true,
-        });
         return (
-            <TransitionGroup transitionName="fade-in">
-            {this.props.visible ?
-                <div key={"RoleSwitcher_" + this.props.visible} className={classes}>
+            <TransitionGroup transitionName="transition-fade">
+                {this.state.visible ?
+                <div key={"RoleSwitcher_" + this.state.visible} className="RoleSwitcher container">
                     <ul>
                         <li><a href="#"><span>食べたい物を選ぶ</span></a></li>
                         <li><a href="#"><span>作る物を決める</span></a></li>
                     </ul>
-                </div> : null
-            }
+                    <button onClick={this.onClick}>hoge</button>
+                </div>
+                : null
+                }
             </TransitionGroup>
         )
     }
@@ -68,9 +73,7 @@ var Page = React.createClass({
         return (
             <div className="Page">
                 <TopBox onLoginSucceeed={this.handleLoginSucceeded} />
-                <TransitionGroup transitionName="fade-in">
-                    <RoleSwitcher visible={this.state.roleSwitcherVisible} />
-                </TransitionGroup>
+                <RoleSwitcher key={"roleswitcher_" + this.state.roleSwitcherVisible} visible={this.state.roleSwitcherVisible} />
                 <div className="container">
                     <div>
                         <h2>おとなりメニュー</h2>
@@ -90,4 +93,5 @@ React.render(
     <Page />,
     document.getElementById('page')
 );
+
 })();

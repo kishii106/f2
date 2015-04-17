@@ -27,7 +27,7 @@ func init() {
     if err := db.CreateTableIfNotExists(&Menu{}); err != nil {
         panic(err)
     }
-    if err := db.CreateTableIfNotExists(&User{}); err != nil {
+    if err := db.CreateTableIfNotExists(&Family{}); err != nil {
         panic(err)
     }
 
@@ -49,7 +49,7 @@ func insertTestData() {
     if _, err := db.Insert(&Menu{Name: fmt.Sprintf("%d", rand.Int31n(9999)), PopularLevel: rand.Int31n(99) + 1}); err != nil {
         panic(err)
     }
-    if _, err := db.Insert(&User{Name: "jabara", Password: "jabara"}); err != nil {
+    if _, err := db.Insert(&Family{Name: "jabara", Password: "jabara"}); err != nil {
         fmt.Println(err)
     }
 }
