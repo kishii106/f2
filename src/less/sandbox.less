@@ -1,0 +1,43 @@
+.GlobalMenu {
+    .menu-button {
+        font-size: 150%;
+        position: fixed;
+        top: 2px;
+        right: -2px;
+        padding-right: 6px;
+    }
+    .menu-list {
+        font-size: 150%;
+        background: rgba(255,255,255,.6);
+        position: fixed;
+        top: 50px;
+        right: 0px;
+    }
+    .menu-item {
+        margin: 1px;
+        padding-top: 2px;
+        padding-left: 4px;
+        padding-right: 4px;
+        padding-bottom: 1px;
+        list-style: none;
+        color: rgba(255,255,255,1);
+        background: rgba(0,0,0,1);
+    }
+    .menu-text {
+        padding-left: 6px;
+    }
+    .menu-list-enter {
+        right: -100px;
+        transition: right .1s ease-in;
+    }
+    .menu-list-enter-active {
+        right: 0;
+    }
+    .menu-list-leave {
+        right: 0px;
+        transition: right .1s ease-in;
+    }
+    .menu-list-leave-active {
+        right: -100px;
+    }
+}

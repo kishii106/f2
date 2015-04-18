@@ -1,0 +1,1 @@
+(function(){"use strict";window.Neighbor=React.createClass({displayName:"Neighbor",render:function(){var classes=React.addons.classSet({hidden:!this.props.visible,neighbor:!0,container:!0});return React.createElement("div",{className:classes})}})})();

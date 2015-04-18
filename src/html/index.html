@@ -1,0 +1,21 @@
+{{define "title"}}ようこそ！{{end}}
+{{define "page.css"}}
+  {{"/css/index.css.min"|cssTag}}
+{{end}}
+{{define "page.js"}}
+  {{"/js/common/jquery.activity-indicator-1.0.0.min.js"|jsTag}}
+  {{"/js/common/indicator.js.min"|jsTag}}
+  {{"/js/global-menu.js.min"|jsTag}}
+  {{"/js/menu-item.js.min"|jsTag}}
+  {{"/js/login-box.js.min"|jsTag}}
+  {{"/js/guest-menu.js.min"|jsTag}}
+  {{"/js/genre.js.min"|jsTag}}
+  {{"/js/word-search.js.min"|jsTag}}
+  {{"/js/neighbor.js.min"|jsTag}}
+  {{"/js/menu-registration.js"|jsTag}}
+  {{"/js/index.js"|jsTag}}
+{{end}}
+
+{{define "contents"}}
+    <div id="page"></div>
+{{end}}
