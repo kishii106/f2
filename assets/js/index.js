@@ -33,25 +33,15 @@ var TopBox = React.createClass({displayName: "TopBox",
 });
 
 var RoleSwitcher = React.createClass({displayName: "RoleSwitcher",
-    getInitialState: function() {
-        return {
-            visible: this.props.visible
-        };
-    },
-    onClick: function() {
-        console.log(arguments);
-        this.setState({ visible: !this.state.visible });
-    },
     render: function() {
         return (
-            React.createElement(TransitionGroup, {transitionName: "transition-fade"}, 
-                this.state.visible ?
-                React.createElement("div", {key: "RoleSwitcher_" + this.state.visible, className: "RoleSwitcher container"}, 
+            React.createElement("div", null, 
+                this.props.visible ?
+                React.createElement("div", {className: "RoleSwitcher container"}, 
                     React.createElement("ul", null, 
                         React.createElement("li", null, React.createElement("a", {href: "#"}, React.createElement("span", null, "食べたい物を選ぶ"))), 
                         React.createElement("li", null, React.createElement("a", {href: "#"}, React.createElement("span", null, "作る物を決める")))
-                    ), 
-                    React.createElement("button", {onClick: this.onClick}, "hoge")
+                    )
                 )
                 : null
                 
@@ -69,11 +59,17 @@ var Page = React.createClass({displayName: "Page",
     handleLoginSucceeded: function() {
         this.setState({ roleSwitcherVisible: true });
     },
+    handleGlobalMenuClicked: function() {
+        console.log(arguments);
+    },
     render: function() {
         return (
             React.createElement("div", {className: "Page"}, 
+                React.createElement(GlobalMenu, {onItemClicked: this.handleGlobalMenuClicked}), 
                 React.createElement(TopBox, {onLoginSucceeed: this.handleLoginSucceeded}), 
-                React.createElement(RoleSwitcher, {key: "roleswitcher_" + this.state.roleSwitcherVisible, visible: this.state.roleSwitcherVisible}), 
+                React.createElement(TransitionGroup, {transitionName: "transition-fade"}, 
+                    React.createElement(RoleSwitcher, {key: "roleswitcher_" + this.state.roleSwitcherVisible, visible: this.state.roleSwitcherVisible})
+                ), 
                 React.createElement("div", {className: "container"}, 
                     React.createElement("div", null, 
                         React.createElement("h2", null, "おとなりメニュー"), 

@@ -33,29 +33,19 @@ var TopBox = React.createClass({
 });
 
 var RoleSwitcher = React.createClass({
-    getInitialState: function() {
-        return {
-            visible: this.props.visible
-        };
-    },
-    onClick: function() {
-        console.log(arguments);
-        this.setState({ visible: !this.state.visible });
-    },
     render: function() {
         return (
-            <TransitionGroup transitionName="transition-fade">
-                {this.state.visible ?
-                <div key={"RoleSwitcher_" + this.state.visible} className="RoleSwitcher container">
+            <div>
+                {this.props.visible ?
+                <div className="RoleSwitcher container">
                     <ul>
                         <li><a href="#"><span>食べたい物を選ぶ</span></a></li>
                         <li><a href="#"><span>作る物を決める</span></a></li>
                     </ul>
-                    <button onClick={this.onClick}>hoge</button>
                 </div>
                 : null
                 }
-            </TransitionGroup>
+            </div>
         )
     }
 });
@@ -69,11 +59,17 @@ var Page = React.createClass({
     handleLoginSucceeded: function() {
         this.setState({ roleSwitcherVisible: true });
     },
+    handleGlobalMenuClicked: function() {
+        console.log(arguments);
+    },
     render: function() {
         return (
             <div className="Page">
+                <GlobalMenu onItemClicked={this.handleGlobalMenuClicked} />
                 <TopBox onLoginSucceeed={this.handleLoginSucceeded} />
-                <RoleSwitcher key={"roleswitcher_" + this.state.roleSwitcherVisible} visible={this.state.roleSwitcherVisible} />
+                <TransitionGroup transitionName="transition-fade">
+                    <RoleSwitcher key={"roleswitcher_" + this.state.roleSwitcherVisible} visible={this.state.roleSwitcherVisible} />
+                </TransitionGroup>
                 <div className="container">
                     <div>
                         <h2>おとなりメニュー</h2>

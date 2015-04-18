@@ -8,10 +8,8 @@ window.GlobalMenu = React.createClass({
         return {
             listVisible: false,
             data: [
-                { description: "genre", text: "ジャンル別", icon: "tags" },
-                { description: "neighbor", text: "おとなり", icon: "home" },
-                { description: "settings", text: "設定", icon: "cog" },
-                { description: "login", text: "ログイン", icon: "log-in" },
+                { description: "logout", text: "ログアウト", icon: "log-out" },
+                { description: "settings", text: "設定", icon: "cog" }
             ],
         };
     },
