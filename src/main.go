@@ -8,7 +8,6 @@ import (
 
     "./assets"
     "./env"
-    "./handler"
 )
 
 func main() {
@@ -16,12 +15,7 @@ func main() {
 
     goji.Get("", http.RedirectHandler("/", http.StatusSeeOther))
     goji.Get("/", assets.BasicLayoutHtmlHandler("html/index.html"))
-    goji.Get("/menu/", handler.GetAllMenus);
-    goji.Get("/neighbor-menu/", handler.GetNeighborMenus);
-
-    goji.Post("/login/try", handler.TryLogin)
-
-    goji.Get("/sandbox", assets.BasicLayoutHtmlHandler("html/sandbox.html"))
+    goji.Get("/noga", assets.BasicLayoutHtmlHandler("html/noga.html"))
 
     goji.Get("/css/*", assets.ContentTypeHandler("text/css"))
     goji.Get("/js/*", assets.ContentTypeHandler("text/javascript"))
